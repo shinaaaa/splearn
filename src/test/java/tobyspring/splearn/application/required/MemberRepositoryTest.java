@@ -9,7 +9,7 @@ import tobyspring.splearn.domain.Member;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static tobyspring.splearn.domain.MemberFixture.createMemberRegister;
+import static tobyspring.splearn.domain.MemberFixture.createMemberRegisterRequest;
 import static tobyspring.splearn.domain.MemberFixture.createPasswordEncoder;
 
 @DataJpaTest
@@ -22,7 +22,7 @@ class MemberRepositoryTest {
 
     @Test
     void createMember() {
-        Member member = Member.register(createMemberRegister(), createPasswordEncoder());
+        Member member = Member.register(createMemberRegisterRequest(), createPasswordEncoder());
 
         assertThat(member.getId()).isNull();
 
@@ -35,10 +35,10 @@ class MemberRepositoryTest {
 
     @Test
     void duplicateEmailFail() {
-        Member member = Member.register(createMemberRegister(), createPasswordEncoder());
+        Member member = Member.register(createMemberRegisterRequest(), createPasswordEncoder());
         memberRepository.save(member);
 
-        Member member2 = Member.register(createMemberRegister(), createPasswordEncoder());
+        Member member2 = Member.register(createMemberRegisterRequest(), createPasswordEncoder());
         assertThatThrownBy(() -> memberRepository.save(member2))
                 .isInstanceOf(DataIntegrityViolationException.class);
 

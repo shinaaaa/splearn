@@ -2,12 +2,12 @@ package tobyspring.splearn.domain;
 
 public class MemberFixture {
 
-    public static MemberRegisterRequest createMemberRegister(String email) {
+    public static MemberRegisterRequest createMemberRegisterRequest(String email) {
         return new MemberRegisterRequest(email, "shin", "secret");
     }
 
-    public static MemberRegisterRequest createMemberRegister() {
-        return createMemberRegister("shin@splearn.app");
+    public static MemberRegisterRequest createMemberRegisterRequest() {
+        return createMemberRegisterRequest("shin@splearn.app");
     }
 
     public static PasswordEncoder createPasswordEncoder() {
