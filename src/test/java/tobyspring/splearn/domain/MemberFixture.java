@@ -18,9 +18,9 @@ public class MemberFixture {
             }
 
             @Override
-            public boolean matches(String password, String encodedPassword) {
+            public boolean matches(String password, String passwordHash) {
                 return encode(password)
-                        .equals(encodedPassword);
+                        .equals(passwordHash);
             }
         };
     }
