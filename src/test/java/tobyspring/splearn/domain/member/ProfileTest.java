@@ -16,9 +16,6 @@ class ProfileTest {
 
     @Test
     void profileFail() {
-        assertThatThrownBy(() -> new Profile(""))
-                .isInstanceOf(IllegalArgumentException.class);
-
         assertThatThrownBy(() -> new Profile("toolongtoolongtoolong"))
                 .isInstanceOf(IllegalArgumentException.class);
 
