@@ -1,6 +1,5 @@
 package tobyspring.splearn.domain.member;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +16,6 @@ import java.util.Objects;
 @NoArgsConstructor(access = lombok.AccessLevel.PROTECTED)
 public class MemberDetail extends AbstractEntity {
 
-    @Embedded
     private Profile profile;
 
     private String introduction;
@@ -46,7 +44,7 @@ public class MemberDetail extends AbstractEntity {
     }
 
     void updateInfo(MemberInfoUpdateRequest updateRequest) {
-        this.profile = new  Profile(updateRequest.profileAddress());
+        this.profile = new Profile(updateRequest.profileAddress());
         this.introduction = Objects.requireNonNull(updateRequest.introduction());
     }
 }

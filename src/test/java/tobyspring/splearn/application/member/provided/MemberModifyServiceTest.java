@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Import;
 import tobyspring.splearn.SplearnTestConfiguration;
 import tobyspring.splearn.domain.member.*;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -36,14 +37,48 @@ record MemberModifyServiceTest(MemberRegister memberRegister, EntityManager enti
 
     @Test
     void activate() {
-        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
-        entityManager.flush();
-        entityManager.clear();
+        Member member = registerMember();
 
         member = memberRegister.activate(member.getId());
         entityManager.flush();
 
         assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
+        assertThat(member.getDetail().getActivatedAt()).isNotNull();
+    }
+
+    @Test
+    void deactivate() {
+        Member member = registerMember();
+
+        memberRegister.activate(member.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        member = memberRegister.deactivate(member.getId());
+
+        assertThat(member.getStatus()).isEqualTo(MemberStatus.DEACTIVATED);
+        assertThat(member.getDetail().getDeactivatedAt()).isNotNull();
+    }
+
+    @Test
+    void updateInfo() {
+        Member member = registerMember();
+
+        memberRegister.activate(member.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        var request = new MemberInfoUpdateRequest("shin1", "toby123", "자기소개");
+        member = memberRegister.updateInfo(member.getId(), request);
+
+        assertThat(member.getDetail().getProfile().address()).isEqualTo("toby123");
+    }
+
+    private Member registerMember() {
+        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
+        entityManager.flush();
+        entityManager.clear();
+        return member;
     }
 
     @Test
